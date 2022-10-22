@@ -6,7 +6,7 @@ import java.util.Scanner;
 import exceptions.CustomException;
 import user.User;
 
-public class UserManagement {
+public class UserManagement{
 	
 	private static final String ANSI_GREEN = "\u001B[32m";
 	private static final String ANSI_RED= "\u001B[31m";
@@ -104,28 +104,20 @@ public class UserManagement {
 		}
 	}
 	
-	public void signIn(String email, String password)
+	public void signIn(String email, String password) throws Exception
 	{
 		
-		try {
-			
-			if(!userDb.containsKey(email)) throw new CustomException("Incorrect Email/Password");
-			
-			User user = userDb.get(email);
-			
-//			System.out.println(user.toString());
-			
-			if(!user.checkPassword(password)) throw new CustomException("Incorrect Email/Password");
-			
-			currentUser = user;
-			
-			System.out.println(ANSI_GREEN + "SignedIn successfully" + ANSI_RESET);
-		}
-		catch (Exception e) {
-			
-//			System.out.println(e.getCause());
-			e.printStackTrace();
-		}
+		if(!userDb.containsKey(email)) throw new CustomException("Incorrect Email/Password");
+		
+		User user = userDb.get(email);
+		
+//		System.out.println(user.toString());
+		
+		if(!user.checkPassword(password)) throw new CustomException("Incorrect Email/Password");
+		
+		currentUser = user;
+		
+		System.out.println(ANSI_GREEN + "SignedIn successfully" + ANSI_RESET);
 		
 		
 	}
@@ -228,8 +220,8 @@ public class UserManagement {
 		
 	}
 	
-	static User currentUser;
-	static HashMap<String, User> userDb;
+	public User currentUser;
+	public HashMap<String, User> userDb;
 	
 	
 	public UserManagement() {

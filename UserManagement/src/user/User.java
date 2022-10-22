@@ -11,6 +11,9 @@ public class User {
 	protected String address;
 	protected String phoneNumber;
 	protected boolean isAdmin;
+	private final int maxTries = 5;
+	private int tries;
+	// exp date
 	
 	private static int userIdCounter = 1;
 	
@@ -51,6 +54,7 @@ public class User {
 
 	public void setEmail(String email) throws CustomException {
 		
+		email = email.strip();
 		/// check if email already exists 
 		
 		String regex = "[a-z0-9]+@[a-z]+\\.[a-z]{2,3}";
@@ -73,13 +77,32 @@ public class User {
 	
 	public boolean checkPassword(String password) {
 		
-		if(password.length() != getPassword().length()) return false;
+		if(password.length() != getPassword().length())
+		{
+			tries++;
+			return false;
+		}
 		
-		return getPassword().equals(password);
+		boolean check = getPassword().equals(password);
+		
+		if(!check)
+		{
+			tries++;
+			return false;
+		}
+		
+		else
+		{
+			tries = 0;
+			return true;
+		}
+		
 		
 	}
 
 	private void setPassword(String password) throws CustomException{
+		
+		password = password.strip();
 		
 		if(password.length() < 7) throw new CustomException("Enter valid Password");
 		this.password = password;
